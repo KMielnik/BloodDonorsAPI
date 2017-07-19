@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BloodDonors.Core.Domain
 {
-    class Personnel
+    public class Personnel
     {
         public string Pesel { get; protected set; }
         public string Password { get; protected set; }

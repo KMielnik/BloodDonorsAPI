@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BloodDonors.Core.Domain
 {
-    class BloodDonation
+    public class BloodDonation
     {
         public int Id { get; protected set; }
         public DateTime DateOfDonation { get; protected set; }

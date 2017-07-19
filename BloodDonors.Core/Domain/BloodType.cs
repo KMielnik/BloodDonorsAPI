@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BloodDonors.Core.Domain
 {
-    class BloodType
+    public class BloodType
     {
         public int Id { get; protected set; }
         public string AboType { get; protected set; }
