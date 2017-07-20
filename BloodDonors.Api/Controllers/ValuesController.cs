@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-namespace BloodDonors.Controllers
+using BloodDonors.Infrastructure.Services;
+namespace BloodDonors.API.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IDonorService donorService;
+
+        public ValuesController(IDonorService donorService)
+        {
+            this.donorService = donorService;
+        }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await donorService.GetNameAsync("97010311457");
         }
 
         // GET api/values/5

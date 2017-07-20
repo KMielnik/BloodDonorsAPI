@@ -11,7 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Core", "BloodDo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Infrastructure", "BloodDonors.Infrastructure\BloodDonors.Infrastructure.csproj", "{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Api", "BloodDonors.Api\BloodDonors.Api.csproj", "{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.API", "BloodDonors.API\BloodDonors.API.csproj", "{965A5EC9-0EED-4E75-931E-2C4A127E3708}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D} = {8BC30B04-7FCA-42DA-820F-63F4F0FD496D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +38,10 @@ Global
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965A5EC9-0EED-4E75-931E-2C4A127E3708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965A5EC9-0EED-4E75-931E-2C4A127E3708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965A5EC9-0EED-4E75-931E-2C4A127E3708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965A5EC9-0EED-4E75-931E-2C4A127E3708}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

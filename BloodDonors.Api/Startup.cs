@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BloodDonors.Infrastructure.Services;
+using BloodDonors.Core.Repositories;
+using BloodDonors.Infrastructure.Repositories;
 
-namespace BloodDonors
+namespace BloodDonors.API
 {
     public class Startup
     {
@@ -27,7 +30,8 @@ namespace BloodDonors
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            services.AddScoped<IDonorService, DonorService>();
+            services.AddScoped<IDonorRepository, InMemoryDonorRepository>();
             services.AddMvc();
         }
 
