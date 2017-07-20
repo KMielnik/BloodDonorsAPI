@@ -10,9 +10,22 @@ namespace BloodDonors.Core.Domain
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
         public string Name { get; protected set; }
-        public DateTime LastDonated { get; protected set; }
+        public DateTime? LastDonated { get; protected set; }
         public BloodType BloodType { get; protected set; }
         public string Mail { get; protected set; }
         public string Phone { get; protected set; }
+
+        public Donor(string pesel,string password,string salt,
+            string name, BloodType bloodType,string mail,string phone)
+        {
+            Pesel = pesel;
+            Password = password;
+            Salt = salt;
+            Name = name;
+            LastDonated = null;
+            BloodType = bloodType;
+            Mail = mail;
+            Phone = phone;
+        }
     }
 }
