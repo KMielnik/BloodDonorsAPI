@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.Api", "BloodDonors\BloodDonors.Api.csproj", "{708B4301-0ADF-492D-B03B-B5FB09E6833C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Tests", "BloodDonors.Tests\BloodDonors.Tests.csproj", "{046050D2-AC50-48A3-B767-4BC8381ED5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.Tests", "BloodDonors.Tests\BloodDonors.Tests.csproj", "{046050D2-AC50-48A3-B767-4BC8381ED5FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Tests.EndToEnd", "BloodDonors.Tests.EndToEnd\BloodDonors.Tests.EndToEnd.csproj", "{F230AAC8-AB5C-4FBE-AAAB-5110F1DE30B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.Tests.EndToEnd", "BloodDonors.Tests.EndToEnd\BloodDonors.Tests.EndToEnd.csproj", "{F230AAC8-AB5C-4FBE-AAAB-5110F1DE30B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Core", "BloodDonors.Core\BloodDonors.Core.csproj", "{8D2FA238-028B-4B94-9B8B-6B2DD208D084}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.Core", "BloodDonors.Core\BloodDonors.Core.csproj", "{8D2FA238-028B-4B94-9B8B-6B2DD208D084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Infrastructure", "BloodDonors.Infrastructure\BloodDonors.Infrastructure.csproj", "{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonors.Infrastructure", "BloodDonors.Infrastructure\BloodDonors.Infrastructure.csproj", "{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonors.Api", "BloodDonors.Api\BloodDonors.Api.csproj", "{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{708B4301-0ADF-492D-B03B-B5FB09E6833C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{708B4301-0ADF-492D-B03B-B5FB09E6833C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{708B4301-0ADF-492D-B03B-B5FB09E6833C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{708B4301-0ADF-492D-B03B-B5FB09E6833C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{046050D2-AC50-48A3-B767-4BC8381ED5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{046050D2-AC50-48A3-B767-4BC8381ED5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{046050D2-AC50-48A3-B767-4BC8381ED5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC30B04-7FCA-42DA-820F-63F4F0FD496D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED3AA40-7CD3-4029-95F7-B012F08DD8DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
