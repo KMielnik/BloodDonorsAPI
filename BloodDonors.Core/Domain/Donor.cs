@@ -76,7 +76,7 @@ namespace BloodDonors.Core.Domain
         {
             if (mail.Empty())
                 throw new Exception($"{nameof(mail)} can't be empty.");
-            Mail = mail;
+            Mail = mail.ToLowerInvariant();
         }
         private void SetPhone(string phone)
         {
