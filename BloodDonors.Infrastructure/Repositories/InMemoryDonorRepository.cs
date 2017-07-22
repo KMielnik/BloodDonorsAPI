@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
@@ -12,8 +10,8 @@ namespace BloodDonors.Infrastructure.Repositories
     {
         private static readonly ISet<Donor> donors = new HashSet<Donor>
         {
-            new Donor("97010311457","pass","salt","Kamil",new BloodType(),"ibiki@wp.pl","510692262"),
-            new Donor("00321812831","pass","salt","Kasia",new BloodType(),"kaska@wp.pl","502672381")
+            new Donor("95011312121","pass","salt","Kamil",new BloodType("A",'+'),"i15fki@wp.pl","513696267"),
+            new Donor("00321312831","pass","salt","Kasia",new BloodType("O",'-'),"kaska@wp.pl","512672581")
         };
 
         public async Task AddAsync(Donor donor)

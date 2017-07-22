@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using BloodDonors.Core.Extensions;
 
 namespace BloodDonors.Core.Domain
 {
     public class BloodType
     {
-        public int Id { get; protected set; }
         public string AboType { get; protected set; }
         public char RhType { get; protected set; }
 
-        public BloodType(int Id, string aboType, char rhType )
+        public BloodType(string aboType, char rhType )
         {
-            this.Id = Id;
             SetAboType(aboType);
             SetRhType(rhType);
         }
