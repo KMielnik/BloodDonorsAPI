@@ -9,11 +9,8 @@ namespace BloodDonors.Core.Domain
 {
     public class Donor
     {
-        [StringLength(11), MinLength(11)]
         public string Pesel { get; protected set; }
-        [StringLength(200), MinLength(5)]
         public string Password { get; protected set; }
-        [StringLength(200)]
         public string Salt { get; protected set; }
         public string Name { get; protected set; }
         public DateTime? LastDonated { get; protected set; }

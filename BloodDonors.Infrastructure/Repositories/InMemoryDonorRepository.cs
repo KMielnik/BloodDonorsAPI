@@ -10,8 +10,8 @@ namespace BloodDonors.Infrastructure.Repositories
     {
         private static readonly ISet<Donor> donors = new HashSet<Donor>
         {
-            new Donor("95011312121","pass","salt","Kamil",new BloodType("A",'+'),"i15fki@wp.pl","513696267"),
-            new Donor("00321312831","pass","salt","Kasia",new BloodType("O",'-'),"kaska@wp.pl","512672581")
+            new Donor("95011312121","pwrws","salt","Kamil",new BloodType("A",'+'),"i15fki@wp.pl","513696267"),
+            new Donor("00321312831","pas2s","salt","Kasia",new BloodType("O",'-'),"kaska@wp.pl","512672581")
         };
 
         public async Task AddAsync(Donor donor)

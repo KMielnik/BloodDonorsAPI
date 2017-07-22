@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BloodDonors.Infrastructure.Services;
 using BloodDonors.Core.Repositories;
+using BloodDonors.Infrastructure.Mappers;
 using BloodDonors.Infrastructure.Repositories;
 
 namespace BloodDonors.API
@@ -32,6 +33,7 @@ namespace BloodDonors.API
         {
             services.AddScoped<IDonorService, DonorService>();
             services.AddScoped<IDonorRepository, InMemoryDonorRepository>();
+            services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
         }
 

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BloodDonors.Core.Domain;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Core.Repositories;
 
@@ -9,15 +12,24 @@ namespace BloodDonors.Infrastructure.Services
     public class DonorService : IDonorService
     {
         private readonly IDonorRepository donorRepository;
+        private readonly IMapper mapper;
 
-        public DonorService(IDonorRepository donorRepository)
+        public DonorService(IDonorRepository donorRepository,IMapper mapper)
         {
             this.donorRepository = donorRepository;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<DonorDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var donors = await donorRepository.GetAllAsync();
+            return donors.Select(donor => mapper.Map<Donor, DonorDTO>(donor));
+        }
+
+        public async Task<DonorDTO> GetAsync(string pesel)
+        {
+            var donor = await donorRepository.GetAsync(pesel);
+            return mapper.Map<Donor,DonorDTO>(donor);
         }
 
         public async Task<string> GetNameAsync(string pesel)

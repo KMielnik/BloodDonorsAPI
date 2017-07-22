@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BloodDonors.Infrastructure.Services;
+using Newtonsoft.Json;
+
 namespace BloodDonors.API.Controllers
 {
     [Route("api/[controller]")]
@@ -17,17 +19,11 @@ namespace BloodDonors.API.Controllers
         }
 
         // GET api/values
-        [HttpGet]
-        public async Task<string> Get()
+        [HttpGet("{pesel}")]
+        public async Task<IActionResult> Get(string pesel)
         {
-            return await donorService.GetNameAsync("97010311457");
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            var donorsDto = await donorService.GetAllAsync();
+            return Json(donorsDto);
         }
 
         // POST api/values

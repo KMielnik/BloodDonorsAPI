@@ -15,6 +15,7 @@ namespace BloodDonors.Infrastructure.Services
             string phone, string passowrd, string salt);
         Task LoginAsync(string pesel, string password);
         Task<IEnumerable<DonorDTO>> GetAllAsync();
+        Task<DonorDTO> GetAsync(string pesel);
         Task<int> HowMuchDonated(string pesel);
     }
 }
