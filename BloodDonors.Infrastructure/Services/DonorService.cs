@@ -46,7 +46,7 @@ namespace BloodDonors.Infrastructure.Services
         /// </summary>
         public async Task<int> HowMuchDonated(string pesel)
         {
-            var bloodDonations = await bloodDonationRepository.GetAllAsync();
+            IEnumerable<BloodDonation> bloodDonations = await bloodDonationRepository.GetAllAsync();
             var donorsDonatedBloodVolume = bloodDonations.Where(x => x.Donor.Pesel == pesel)
                 .Select(x => x.Volume)
                 .Sum(x => x);
