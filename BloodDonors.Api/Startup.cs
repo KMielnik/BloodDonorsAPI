@@ -29,6 +29,8 @@ namespace BloodDonors.API
         {
             services.AddScoped<IDonorService, DonorService>();
             services.AddScoped<IDonorRepository, InMemoryDonorRepository>();
+            services.AddScoped<IBloodDonationRepository, InMemoryBloodDonationRepository>();
+            services.AddScoped<IPersonnelRepository, InMemoryPersonnelRepository>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
         }

@@ -12,7 +12,7 @@ namespace BloodDonors.Infrastructure.Services
         Task<DateTime> WhenWillBeAbleToDonateAgainAsync(string pesel);
         Task RegisterAsync(string pesel, string name,
             BloodTypeDTO bloodTypeDTO, string mail,
-            string phone, string passowrd, string salt);
+            string phone, string passowrd);
         Task LoginAsync(string pesel, string password);
         Task<IEnumerable<DonorDTO>> GetAllAsync();
         Task<DonorDTO> GetAsync(string pesel);

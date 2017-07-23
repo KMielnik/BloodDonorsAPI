@@ -12,11 +12,14 @@ namespace BloodDonors.Infrastructure.Services
     public class DonorService : IDonorService
     {
         private readonly IDonorRepository donorRepository;
+        private readonly IBloodDonationRepository bloodDonationRepository;
         private readonly IMapper mapper;
 
-        public DonorService(IDonorRepository donorRepository,IMapper mapper)
+        public DonorService(IDonorRepository donorRepository, IBloodDonationRepository bloodDonationRepository,
+            IMapper mapper)
         {
             this.donorRepository = donorRepository;
+            this.bloodDonationRepository = bloodDonationRepository;
             this.mapper = mapper;
         }
 
@@ -38,9 +41,16 @@ namespace BloodDonors.Infrastructure.Services
             return donor.Name;
         }
 
+        /// <summary>
+        /// Returns blood volume (in mililiters) donated by donor.
+        /// </summary>
         public async Task<int> HowMuchDonated(string pesel)
         {
-            throw new NotImplementedException();
+            var bloodDonations = await bloodDonationRepository.GetAllAsync();
+            var donorsDonatedBloodVolume = bloodDonations.Where(x => x.Donor.Pesel == pesel)
+                .Select(x => x.Volume)
+                .Sum(x => x);
+            return donorsDonatedBloodVolume;
         }
 
         public async Task LoginAsync(string pesel, string password)
@@ -49,14 +59,40 @@ namespace BloodDonors.Infrastructure.Services
         }
 
         public async Task RegisterAsync(string pesel, string name, BloodTypeDTO bloodTypeDTO, 
-            string mail, string phone, string passowrd, string salt)
+            string mail, string phone, string passowrd)
         {
-            throw new NotImplementedException();
+            var donor = await donorRepository.GetAsync(pesel);
+            if(donor != null)
+                throw new Exception("User with that PESEL already exists");
+            var salt = "saltyy";                                                                                //TO DO generate proper salt
+
+            var bloodType = new BloodType(bloodTypeDTO.AboType, bloodTypeDTO.RhType);
+            donor = new Donor(pesel, passowrd, salt, name,
+                bloodType, mail, phone);
+            await donorRepository.AddAsync(donor);
         }
 
+        /// <summary>
+        /// Returns Time when donor will be able to donate blood again,
+        /// DateTime.MinValue when never donated before.
+        /// </summary>
         public async Task<DateTime> WhenWillBeAbleToDonateAgainAsync(string pesel)
         {
-            throw new NotImplementedException();
+            var lastDonated = (await donorRepository.GetAsync(pesel)).LastDonated;
+            if(lastDonated == null)
+                return DateTime.MinValue;
+            if (IsMale(pesel))
+                return lastDonated.Value + TimeSpan.FromDays(61);   //Male need to wait 2 months
+            return lastDonated.Value + TimeSpan.FromDays(92);       //Female 3 months.
+        }
+
+        /// <summary>
+        /// Assumes persons gender based by their pesel number.
+        /// </summary>
+        private static bool IsMale(string pesel)
+        {
+            var charWithPersonsGender = pesel.Substring(9, 1);  //10th char contains info about persons gender,
+            return (int.Parse(charWithPersonsGender) % 2) == 1; //male if odd, female if even.
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace BloodDonors.Infrastructure.Repositories
 {
-    class InMemoryBloodDonationRepository : IBloodDonationRepository
+    public class InMemoryBloodDonationRepository : IBloodDonationRepository
     {
         private static readonly ISet<BloodDonation> bloodDonations = new HashSet<BloodDonation>();
 
