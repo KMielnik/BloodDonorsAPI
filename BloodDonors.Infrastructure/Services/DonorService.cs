@@ -25,7 +25,7 @@ namespace BloodDonors.Infrastructure.Services
 
         public async Task<IEnumerable<DonorDTO>> GetAllAsync()
         {
-            var donors = await donorRepository.GetAllAsync();
+            IEnumerable<Donor> donors = await donorRepository.GetAllAsync();
             return donors.Select(donor => mapper.Map<Donor, DonorDTO>(donor));
         }
 
