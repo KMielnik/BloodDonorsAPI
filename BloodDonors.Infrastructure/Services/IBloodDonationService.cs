@@ -8,6 +8,6 @@ namespace BloodDonors.Infrastructure.Services
     {
         Task<IEnumerable<BloodDonationDTO>> GetAllAsync();
         Task<int> HowMuchBloodHasBeenDonatedEver();
-
+        Task AddBloodDonationAsync()
     }
 }

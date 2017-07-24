@@ -18,12 +18,12 @@ namespace BloodDonors.Infrastructure.Repositories
         public async Task<IEnumerable<BloodDonation>> GetAllAsync()
             => await Task.FromResult(bloodDonations);
 
-        public async Task<BloodDonation> GetAsync(int id)
-            => await Task.FromResult(bloodDonations.SingleOrDefault(x => x.Id == id));
+        public async Task<BloodDonation> GetAsync(Guid guid)
+            => await Task.FromResult(bloodDonations.SingleOrDefault(x => x.Guid == guid));
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid guid)
         {
-            var bloodDonation = await GetAsync(id);
+            var bloodDonation = await GetAsync(guid);
             bloodDonations.Remove(bloodDonation);
             await Task.CompletedTask;
         }

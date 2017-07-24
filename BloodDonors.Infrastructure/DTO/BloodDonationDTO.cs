@@ -6,7 +6,6 @@ namespace BloodDonors.Infrastructure.DTO
 {
     public class BloodDonationDTO
     {
-        public int Id { get;  set; }
         public DateTime DateOfDonation { get;  set; }
         public int Volume { get;  set; }
         public BloodTypeDTO BloodType { get;  set; }
