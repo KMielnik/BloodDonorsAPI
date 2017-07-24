@@ -27,10 +27,14 @@ namespace BloodDonors.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IDonorService, DonorService>();
             services.AddScoped<IDonorRepository, InMemoryDonorRepository>();
             services.AddScoped<IBloodDonationRepository, InMemoryBloodDonationRepository>();
             services.AddScoped<IPersonnelRepository, InMemoryPersonnelRepository>();
+            services.AddScoped<IBloodTypeRepository, InMemoryBloodTypeRepository>();
+            services.AddScoped<IDonorService, DonorService>();
+            services.AddScoped<IBloodDonationService, BloodDonationService>();
+            services.AddScoped<IBloodTypeService, BloodTypeService>();
+            services.AddScoped<IPersonnelService, PersonnelService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
         }
