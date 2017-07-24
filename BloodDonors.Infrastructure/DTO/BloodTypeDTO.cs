@@ -8,5 +8,16 @@ namespace BloodDonors.Infrastructure.DTO
     {
         public string AboType { get; set; }
         public char RhType { get; set; }
+
+        public BloodTypeDTO()
+        {
+            
+        }
+
+        public BloodTypeDTO(string aboType, char rhType)
+        {
+            AboType = aboType;
+            RhType = rhType;
+        }
     }
 }

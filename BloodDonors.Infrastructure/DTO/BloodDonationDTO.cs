@@ -11,5 +11,19 @@ namespace BloodDonors.Infrastructure.DTO
         public BloodTypeDTO BloodType { get;  set; }
         public DonorDTO Donor { get;  set; }
         public PersonnelDTO BloodTaker { get;  set; }
+
+        public BloodDonationDTO()
+        {
+            
+        }
+
+        public BloodDonationDTO(DateTime dateOfDonation, int volume, BloodTypeDTO bloodType, DonorDTO donor, PersonnelDTO bloodTaker)
+        {
+            DateOfDonation = dateOfDonation;
+            Volume = volume;
+            BloodType = bloodType;
+            Donor = donor;
+            BloodTaker = bloodTaker;
+        }
     }
 }

@@ -65,15 +65,13 @@ namespace BloodDonors.Infrastructure.Services
         public async Task<IEnumerable<DonorScoreDTO>> GetHonoraryDonorsAsync()
         {
             IEnumerable<BloodDonation> allBloodDonations = await bloodDonationRepository.GetAllAsync();
-            IOrderedEnumerable<DonorScoreDTO> allPeopleWhoDonatedOver20Liters = allBloodDonations.Select(x => new {x.Donor.Name, x.Volume})
+            IOrderedEnumerable<DonorScoreDTO> allPeopleWhoDonatedOver20Liters = allBloodDonations
+                .Select(x => new {x.Donor.Name, x.Volume})
                 .GroupBy(x => x.Name)
-                .Select(g => new DonorScoreDTO()
-                {
-                    Name = g.Key,
-                    Volume = g.Sum(x => x.Volume)
-                }).Where(x => x.Volume > 20000)
+                .Select(g => new DonorScoreDTO(g.Key, g.Sum(x => x.Volume)))
+                .Where(x => x.Volume > 20000)
                 .OrderByDescending(x => x.Volume)
-                .ThenBy(x=>x.Name);
+                .ThenBy(x => x.Name);
 
             return allPeopleWhoDonatedOver20Liters;
         }

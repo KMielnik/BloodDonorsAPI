@@ -12,5 +12,21 @@ namespace BloodDonors.Infrastructure.DTO
         public BloodTypeDTO BloodType { get; set; }
         public string Mail { get; set; }
         public string Phone { get; set; }
+
+        public DonorDTO()
+        {
+            
+        }
+
+        public DonorDTO(string pesel, string name, DateTime lastDonated, BloodTypeDTO bloodType, string mail,
+            string phone)
+        {
+            Pesel = pesel;
+            Name = name;
+            LastDonated = lastDonated;
+            BloodType = bloodType;
+            Mail = mail;
+            Phone = phone;
+        }
     }
 }
