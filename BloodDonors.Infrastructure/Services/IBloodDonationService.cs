@@ -13,6 +13,6 @@ namespace BloodDonors.Infrastructure.Services
             string personnelPesel);
 
         Task<int> HowMuchBloodTakenByPersonnel(string pesel);
-        Task<IEnumerable<DonorScoreDTO>> GetTop10Donors();
+        Task<IEnumerable<DonorScoreDTO>> GetHonoraryDonorsAsync();
     }
 }
