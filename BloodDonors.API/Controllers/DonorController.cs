@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonors.API.Controllers
@@ -16,6 +17,7 @@ namespace BloodDonors.API.Controllers
             this.donorService = donorService;
         }
 
+        [Authorize]
         [HttpGet("{pesel}")]
         public async Task<IActionResult> Get(string pesel)
         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +9,7 @@ using BloodDonors.Infrastructure.Services;
 using BloodDonors.Core.Repositories;
 using BloodDonors.Infrastructure.Mappers;
 using BloodDonors.Infrastructure.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BloodDonors.API
 {
@@ -42,14 +45,25 @@ namespace BloodDonors.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
 
             if(env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            else
-                app.UseExceptionHandler("/error");
-            
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Configuration.GetSection("jwt:issuer").Value,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(Configuration.GetSection("jwt:key").Value))
+                }
+            });
+
+            app.UseStatusCodePages("text/plain", "Status code: {0}");
             app.UseMvc();
         }
     }
