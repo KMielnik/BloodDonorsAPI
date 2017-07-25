@@ -19,8 +19,8 @@ namespace BloodDonors.API.Controllers
         [HttpGet("{pesel}")]
         public async Task<IActionResult> Get(string pesel)
         {
-            IEnumerable<DonorDTO> donorsDto = await donorService.GetAllAsync();
-            return Json(donorsDto);
+            var donorDto = await donorService.GetAsync(pesel);
+            return Json(donorDto);
         }
 
         [HttpPost]
