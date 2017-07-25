@@ -38,6 +38,8 @@ namespace BloodDonors.API
             services.AddScoped<IBloodDonationService, BloodDonationService>();
             services.AddScoped<IBloodTypeService, BloodTypeService>();
             services.AddScoped<IPersonnelService, PersonnelService>();
+            services.AddSingleton<IJwtService, JwtService>();
+            services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
         }
@@ -62,7 +64,7 @@ namespace BloodDonors.API
                         Encoding.UTF8.GetBytes(Configuration.GetSection("jwt:key").Value))
                 }
             });
-
+            
             app.UseStatusCodePages("text/plain", "Status code: {0}");
             app.UseMvc();
         }

@@ -14,9 +14,10 @@ namespace BloodDonors.Infrastructure.Services
         private readonly IDonorRepository donorRepository;
         private readonly IBloodDonationRepository bloodDonationRepository;
         private readonly IMapper mapper;
+        private readonly IEncrypter encrypter;
 
         public DonorService(IDonorRepository donorRepository, IBloodDonationRepository bloodDonationRepository,
-            IMapper mapper)
+            IMapper mapper, IEncrypter encrypter)
         {
             this.donorRepository = donorRepository;
             this.bloodDonationRepository = bloodDonationRepository;
@@ -55,7 +56,14 @@ namespace BloodDonors.Infrastructure.Services
 
         public async Task LoginAsync(string pesel, string password)
         {
-            throw new NotImplementedException();
+            var donor = await donorRepository.GetAsync(pesel);
+            if (donor == null)
+                throw new Exception("User not found");
+
+            var hash = encrypter.GetHash(password, donor.Salt);
+            if(donor.Password == hash)
+                return;
+            throw new Exception("Incorrect password");
         }
 
         public async Task RegisterAsync(string pesel, string name, BloodTypeDTO bloodTypeDTO, 
@@ -64,10 +72,12 @@ namespace BloodDonors.Infrastructure.Services
             var donor = await donorRepository.GetAsync(pesel);
             if(donor != null)
                 throw new Exception("User with that PESEL already exists");
-            var salt = "saltyy";                                                                                //TO DO generate proper salt
+
+            var salt = encrypter.GetSalt(passowrd);
+            var hash = encrypter.GetHash(passowrd, salt);
 
             var bloodType = new BloodType(bloodTypeDTO.AboType, bloodTypeDTO.RhType);
-            donor = new Donor(pesel, passowrd, salt, name,
+            donor = new Donor(pesel, hash, salt, name,
                 bloodType, mail, phone);
             await donorRepository.AddAsync(donor);
         }
