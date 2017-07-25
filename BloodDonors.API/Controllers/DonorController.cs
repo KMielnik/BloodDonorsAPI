@@ -13,9 +13,10 @@ namespace BloodDonors.API.Controllers
         private readonly IDonorService donorService;
         private readonly IJwtService jwtService;
 
-        public DonorController(IDonorService donorService)
+        public DonorController(IDonorService donorService, IJwtService jwtService)
         {
             this.donorService = donorService;
+            this.jwtService = jwtService;
         }
 
         [Authorize]
@@ -28,10 +29,10 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody] (string pesel, string password) credentials)
+        public async Task<IActionResult> Post([FromBody] Credentials credentials)
         {
-            await donorService.LoginAsync(credentials.pesel, credentials.password);
-            return Json(jwtService.CreateToken(credentials.pesel, "donor"));
+            await donorService.LoginAsync(credentials.Pesel, credentials.Password);
+            return Json(jwtService.CreateToken(credentials.Pesel, "donor"));
         }
 
         [HttpPost]

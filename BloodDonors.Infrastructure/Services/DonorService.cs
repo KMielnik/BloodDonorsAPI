@@ -22,6 +22,7 @@ namespace BloodDonors.Infrastructure.Services
             this.donorRepository = donorRepository;
             this.bloodDonationRepository = bloodDonationRepository;
             this.mapper = mapper;
+            this.encrypter = encrypter;
         }
 
         public async Task<IEnumerable<DonorDTO>> GetAllAsync()

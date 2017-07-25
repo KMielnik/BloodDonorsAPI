@@ -38,7 +38,9 @@ namespace BloodDonors.API
             services.AddScoped<IBloodDonationService, BloodDonationService>();
             services.AddScoped<IBloodTypeService, BloodTypeService>();
             services.AddScoped<IPersonnelService, PersonnelService>();
+            services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton<IJwtService, JwtService>();
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
@@ -60,10 +62,15 @@ namespace BloodDonors.API
                 {
                     ValidIssuer = Configuration.GetSection("jwt:issuer").Value,
                     ValidateAudience = false,
+                    ValidateActor = false,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(Configuration.GetSection("jwt:key").Value))
+                        Encoding.UTF8.GetBytes(Configuration.GetSection("jwt:key").Value)),
+                    ValidateLifetime = false
                 }
             });
+
+            var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+            dataInitializer.SeedAsync();
             
             app.UseStatusCodePages("text/plain", "Status code: {0}");
             app.UseMvc();

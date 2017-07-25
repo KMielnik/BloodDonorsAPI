@@ -8,11 +8,7 @@ namespace BloodDonors.Infrastructure.Repositories
 {
     public class InMemoryDonorRepository : IDonorRepository
     {
-        private static readonly ISet<Donor> donors = new HashSet<Donor>
-        {
-            new Donor("95011312121","pwrws","salt","Kamil",new BloodType("A",'+'),"i15fki@wp.pl","513696267"),
-            new Donor("00321312831","pas2s","salt","Kasia",new BloodType("O",'-'),"kaska@wp.pl","512672581")
-        };
+        private static readonly ISet<Donor> donors = new HashSet<Donor>();
 
         public async Task AddAsync(Donor donor)
             => await Task.FromResult(donors.Add(donor));
