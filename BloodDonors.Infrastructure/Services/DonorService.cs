@@ -78,12 +78,12 @@ namespace BloodDonors.Infrastructure.Services
         /// </summary>
         public async Task<DateTime> WhenWillBeAbleToDonateAgainAsync(string pesel)
         {
-            var lastDonated = (await donorRepository.GetAsync(pesel)).LastDonated;
+            DateTime? lastDonated = (await donorRepository.GetAsync(pesel)).LastDonated;
             if(lastDonated == null)
                 return DateTime.MinValue;
             if (IsMale(pesel))
-                return lastDonated.Value + TimeSpan.FromDays(61);   //Male need to wait 2 months
-            return lastDonated.Value + TimeSpan.FromDays(92);       //Female 3 months.
+                return lastDonated.Value + TimeSpan.FromDays(61);   //Males need to wait 2 months
+            return lastDonated.Value + TimeSpan.FromDays(92);       //Females 3 months.
         }
 
         /// <summary>

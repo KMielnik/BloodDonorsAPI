@@ -22,6 +22,7 @@ namespace BloodDonors.API.Controllers
         public async Task<IActionResult> Get(string pesel)
         {
             var donorDto = await donorService.GetAsync(pesel);
+           
             return Json(donorDto);
         }
 
