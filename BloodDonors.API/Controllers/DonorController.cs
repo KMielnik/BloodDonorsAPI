@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Infrastructure.Services;
@@ -26,6 +29,20 @@ namespace BloodDonors.API.Controllers
             var donorDto = await donorService.GetAsync(pesel);
 
             return Json(donorDto);
+        }
+
+        [Authorize(Roles = "donor")]
+        [HttpGet("name")]
+        public async Task<IActionResult> Get()
+        {
+            string header = Request.Headers.FirstOrDefault(h => h.Key.Equals("Authorization")).Value;
+            var token = header.Replace("Bearer ", String.Empty);
+
+            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            
+            string name= jwt.Id;
+            var donorName = await donorService.GetNameAsync(name);
+            return Json(donorName);
         }
 
         [HttpPost("login")]

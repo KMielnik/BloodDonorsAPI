@@ -17,12 +17,10 @@ namespace BloodDonors.Infrastructure.Services
         }
         public string CreateToken(string pesel, string role)
         {
-            var claims = new Claim[]
+            var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, pesel),
-                new Claim(JwtRegisteredClaimNames.UniqueName, pesel),
-                new Claim(ClaimTypes.Role, role),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, pesel),
+                new Claim(ClaimTypes.Role, role)
             };
 
             var signingCredentials = new SigningCredentials(
