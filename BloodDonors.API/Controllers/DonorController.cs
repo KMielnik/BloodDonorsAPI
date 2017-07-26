@@ -47,10 +47,10 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody] Credentials credentials)
+        public async Task<IActionResult> Post([FromBody] LoginCredentials loginCredentials)
         {
-            await donorService.LoginAsync(credentials.Pesel, credentials.Password);
-            return Json(jwtService.CreateToken(credentials.Pesel, "donor"));
+            await donorService.LoginAsync(loginCredentials.Pesel, loginCredentials.Password);
+            return Json(jwtService.CreateToken(loginCredentials.Pesel, "donor"));
         }
 
         [Authorize(Roles = "donor")]

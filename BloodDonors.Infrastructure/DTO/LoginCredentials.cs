@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BloodDonors.Infrastructure.DTO
 {
-    public class Credentials
+    public class LoginCredentials
     {
         public string Pesel;
         public string Password;
