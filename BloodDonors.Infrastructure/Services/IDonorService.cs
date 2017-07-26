@@ -17,5 +17,6 @@ namespace BloodDonors.Infrastructure.Services
         Task<IEnumerable<DonorDTO>> GetAllAsync();
         Task<DonorDTO> GetAsync(string pesel);
         Task<int> HowMuchDonated(string pesel);
+        Task UpdateLastDonated(string pesel, DateTime dateTimeOfDonation);
     }
 }

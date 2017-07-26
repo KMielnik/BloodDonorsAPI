@@ -15,6 +15,9 @@ namespace BloodDonors.Infrastructure.Repositories
         public async Task<IEnumerable<Personnel>> GetAllAsync()
             => await Task.FromResult(personnels);
 
+        public async Task RegisterAsync(Personnel personnel)
+            => await Task.FromResult(personnels.Add(personnel));
+
         public async Task<Personnel> GetAsync(string pesel)
             => await Task.FromResult(personnels.SingleOrDefault(x => x.Pesel == pesel));
     }

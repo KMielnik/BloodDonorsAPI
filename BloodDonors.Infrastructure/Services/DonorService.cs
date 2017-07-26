@@ -55,6 +55,13 @@ namespace BloodDonors.Infrastructure.Services
             return donorsDonatedBloodVolume;
         }
 
+        public async Task UpdateLastDonated(string pesel, DateTime dateTimeOfDonation)
+        {
+            var donor = await donorRepository.GetAsync(pesel);
+            donor.UpdateTimeOfLastDonation(dateTimeOfDonation);
+            await donorRepository.UpdateAsync(donor);
+        }
+
         public async Task LoginAsync(string pesel, string password)
         {
             var donor = await donorRepository.GetAsync(pesel);

@@ -34,11 +34,10 @@ namespace BloodDonors.Infrastructure.Services
         public async Task<int> HowMuchBloodHasBeenDonatedEver()
             => (await bloodDonationRepository.GetAllAsync()).Sum(x => x.Volume);
 
-        public async Task AddBloodDonationAsync(DateTime dateOfDonation, int volume, BloodTypeDTO bloodTypeDto, string donorPesel,
+        public async Task AddBloodDonationAsync(DateTime dateOfDonation, int volume, string donorPesel,
             string personnelPesel)
         {
             var guid = Guid.NewGuid();
-            var bloodType = new BloodType(bloodTypeDto.AboType, bloodTypeDto.RhType);
             var donor = await donorRepository.GetAsync(donorPesel);
             if (donor == null)
                 throw new Exception($"{nameof(donor)} not found.");
@@ -46,6 +45,10 @@ namespace BloodDonors.Infrastructure.Services
             var personnel = await personnelRepository.GetAsync(personnelPesel);
             if (personnel == null)
                 throw new Exception($"{nameof(personnel)} not found.");
+
+            var bloodType = new BloodType(donor.BloodType.AboType, donor.BloodType.RhType);
+            donor.UpdateTimeOfLastDonation(dateOfDonation);
+            await donorRepository.UpdateAsync(donor);
 
             var bloodDonation = new BloodDonation(guid, dateOfDonation, volume, bloodType, donor, personnel);
             await bloodDonationRepository.AddAsync(bloodDonation);

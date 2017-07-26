@@ -38,6 +38,24 @@ namespace BloodDonors.Infrastructure.Services
                 var mail = $"donor{i}@wp.pl";
 
                 await donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password");
+
+
+                pesel = $"{i}0987654321";
+                name = $"{i} personnel";
+
+                await personnelService.RegisterAsync(pesel, "password", name);
+            }
+
+            List<string> donorPesels = (await donorService.GetAllAsync()).Select(x => x.Pesel).ToList();
+            List<string> personnelPesels = (await personnelService.GetAllAsync()).Select(x => x.Pesel).ToList();
+
+            for (var i = 0; i < 100; i++)
+            {
+                var volume = random.Next(100, 850);
+                var donorPesel = donorPesels[random.Next(donorPesels.Count)];
+                var personnelPesel = personnelPesels[random.Next(personnelPesels.Count)];
+
+                await bloodDonationService.AddBloodDonationAsync(DateTime.Now, volume, donorPesel, personnelPesel);
             }
         }
     }

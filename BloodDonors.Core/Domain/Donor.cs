@@ -32,6 +32,11 @@ namespace BloodDonors.Core.Domain
             SetPhone(phone);
         }
 
+        public void UpdateTimeOfLastDonation(DateTime donationTime)
+        {
+            LastDonated = donationTime;
+        }
+
         private void SetPesel(string pesel)
         {
             if (pesel.Empty())

@@ -10,5 +10,6 @@ namespace BloodDonors.Core.Repositories
     {
         Task<Personnel> GetAsync(string pesel);
         Task<IEnumerable<Personnel>> GetAllAsync();
+        Task RegisterAsync(Personnel personnel);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
@@ -28,6 +29,11 @@ namespace BloodDonors.Infrastructure.Repositories
 
         public async Task UpdateAsync(Donor donor)
         {
+            var oldDonor = donors.SingleOrDefault(x => x.Pesel == donor.Pesel);
+            if (oldDonor == null)
+                throw new Exception("Tried to update non existing donor");
+            donors.Remove(oldDonor);
+            donors.Add(donor);
             await Task.CompletedTask;
         }
     }
