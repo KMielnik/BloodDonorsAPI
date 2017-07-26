@@ -25,11 +25,13 @@ namespace BloodDonors.Infrastructure.Services
         public async Task SeedAsync()
         {
             IEnumerable<DonorDTO> donors = await donorService.GetAllAsync();
-            var random = new Random();
-            List<BloodTypeDTO> bloodTypes = (await bloodTypeService.GetAllAsync()).ToList();
-
             if (donors.Any())
                 return;
+
+            var random = new Random();
+            List<BloodTypeDTO> bloodTypes = (await bloodTypeService.GetAllAsync()).ToList();
+            var tasks = new List<Task>();
+            
             for (var i = 0; i < 10; i++)
             {
                 var pesel = $"{i}1234567890";
@@ -37,14 +39,17 @@ namespace BloodDonors.Infrastructure.Services
                 var bloodTypeDTO = bloodTypes[random.Next(bloodTypes.Count)];
                 var mail = $"donor{i}@wp.pl";
 
-                await donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password");
+                tasks.Add(donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password"));
 
 
                 pesel = $"{i}0987654321";
                 name = $"{i} personnel";
 
-                await personnelService.RegisterAsync(pesel, "password", name);
+                tasks.Add(personnelService.RegisterAsync(pesel, "password", name));
             }
+
+            await Task.WhenAll(tasks);
+            tasks.Clear();
 
             List<string> donorPesels = (await donorService.GetAllAsync()).Select(x => x.Pesel).ToList();
             List<string> personnelPesels = (await personnelService.GetAllAsync()).Select(x => x.Pesel).ToList();
@@ -55,8 +60,10 @@ namespace BloodDonors.Infrastructure.Services
                 var donorPesel = donorPesels[random.Next(donorPesels.Count)];
                 var personnelPesel = personnelPesels[random.Next(personnelPesels.Count)];
 
-                await bloodDonationService.AddBloodDonationAsync(DateTime.Now, volume, donorPesel, personnelPesel);
+                tasks.Add(bloodDonationService.AddBloodDonationAsync(DateTime.Now, volume, donorPesel, personnelPesel));
             }
+
+            await Task.WhenAll(tasks);
         }
     }
 }
