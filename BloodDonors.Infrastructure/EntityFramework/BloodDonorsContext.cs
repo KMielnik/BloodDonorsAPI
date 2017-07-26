@@ -30,11 +30,8 @@ namespace BloodDonors.Infrastructure.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BloodType>(
-                entity =>
-                {
-                    entity.HasKey(x => x.Id);
-                });
+            modelBuilder.Entity<BloodType>()
+                .HasKey(x => new {x.AboType, x.RhType});
 
             modelBuilder.Entity<Donor>(
                 entity =>

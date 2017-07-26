@@ -5,7 +5,6 @@ namespace BloodDonors.Core.Domain
 {
     public class BloodType
     {
-        public Guid Id { get; set; }
         public string AboType { get; protected set; }
         public string RhType { get; protected set; }
 
