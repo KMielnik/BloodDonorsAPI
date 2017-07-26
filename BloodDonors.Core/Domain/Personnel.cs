@@ -52,5 +52,10 @@ namespace BloodDonors.Core.Domain
                 throw new Exception($"{nameof(name)} can't be empty.");
             Name = name;
         }
+
+        public Personnel()
+        {
+            
+        }
     }
 }

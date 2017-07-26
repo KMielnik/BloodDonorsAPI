@@ -7,5 +7,6 @@ namespace BloodDonors.Infrastructure.Services
     public interface IBloodTypeService
     {
         Task<IEnumerable<BloodTypeDTO>> GetAllAsync();
+        Task AddAsync(BloodTypeDTO bloodTypeDto);
     }
 }

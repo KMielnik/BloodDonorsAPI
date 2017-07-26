@@ -8,10 +8,10 @@ namespace BloodDonors.Core.Repositories
 {
     public interface IBloodDonationRepository
     {
-        Task<BloodDonation> GetAsync(Guid guid);
+        Task<BloodDonation> GetAsync(Guid id);
         Task<IEnumerable<BloodDonation>> GetAllAsync();
         Task AddAsync(BloodDonation bloodDonation);
         Task UpdateAsync(BloodDonation bloodDonation);
-        Task DeleteAsync(Guid guid);
+        Task DeleteAsync(Guid id);
     }
 }

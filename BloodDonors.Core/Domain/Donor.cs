@@ -91,5 +91,10 @@ namespace BloodDonors.Core.Domain
 
             Phone = phone;
         }
+
+        public Donor()
+        {
+            
+        }
     }
 }

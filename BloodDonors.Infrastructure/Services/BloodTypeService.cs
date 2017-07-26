@@ -24,5 +24,11 @@ namespace BloodDonors.Infrastructure.Services
             IEnumerable<BloodType> bloodTypes = await bloodTypeRepository.GetAllAsync();
             return bloodTypes.Select(x => mapper.Map<BloodType, BloodTypeDTO>(x));
         }
+
+        public async Task AddAsync(BloodTypeDTO bloodTypeDto)
+        {
+            var bloodType = new BloodType(bloodTypeDto.AboType, bloodTypeDto.RhType);
+            await bloodTypeRepository.AddAsync(bloodType);
+        }
     }
 }

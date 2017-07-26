@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodDonors.Core.Domain;
 using BloodDonors.Infrastructure.DTO;
 
 namespace BloodDonors.Infrastructure.Services
@@ -29,9 +30,24 @@ namespace BloodDonors.Infrastructure.Services
                 return;
 
             var random = new Random();
-            List<BloodTypeDTO> bloodTypes = (await bloodTypeService.GetAllAsync()).ToList();
-            var tasks = new List<Task>();
-            
+
+            var bloodTypes = new List<BloodTypeDTO>
+            {
+                new BloodTypeDTO("A", "-"),
+                new BloodTypeDTO("B", "-"),
+                new BloodTypeDTO("AB", "-"),
+                new BloodTypeDTO("O", "-"),
+                new BloodTypeDTO("A", "+"),
+                new BloodTypeDTO("B", "+"),
+                new BloodTypeDTO("AB", "+"),
+                new BloodTypeDTO("O", "+")
+            };
+
+            foreach (var bloodType in bloodTypes)
+            {
+                await bloodTypeService.AddAsync(bloodType);
+            }
+
             for (var i = 0; i < 10; i++)
             {
                 var pesel = $"{i}1234567890";
@@ -39,17 +55,14 @@ namespace BloodDonors.Infrastructure.Services
                 var bloodTypeDTO = bloodTypes[random.Next(bloodTypes.Count)];
                 var mail = $"donor{i}@wp.pl";
 
-                tasks.Add(donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password"));
+                await donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password");
 
 
                 pesel = $"{i}0987654321";
                 name = $"{i} personnel";
 
-                tasks.Add(personnelService.RegisterAsync(pesel, "password", name));
+                await personnelService.RegisterAsync(pesel, "password", name);
             }
-
-            await Task.WhenAll(tasks);
-            tasks.Clear();
 
             List<string> donorPesels = (await donorService.GetAllAsync()).Select(x => x.Pesel).ToList();
             List<string> personnelPesels = (await personnelService.GetAllAsync()).Select(x => x.Pesel).ToList();
@@ -60,10 +73,8 @@ namespace BloodDonors.Infrastructure.Services
                 var donorPesel = donorPesels[random.Next(donorPesels.Count)];
                 var personnelPesel = personnelPesels[random.Next(personnelPesels.Count)];
 
-                tasks.Add(bloodDonationService.AddBloodDonationAsync(DateTime.Now, volume, donorPesel, personnelPesel));
+                await bloodDonationService.AddBloodDonationAsync(DateTime.Now, volume, donorPesel, personnelPesel);
             }
-
-            await Task.WhenAll(tasks);
-        }
+       }
     }
 }

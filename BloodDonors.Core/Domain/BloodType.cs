@@ -5,13 +5,19 @@ namespace BloodDonors.Core.Domain
 {
     public class BloodType
     {
+        public Guid Id { get; set; }
         public string AboType { get; protected set; }
-        public char RhType { get; protected set; }
+        public string RhType { get; protected set; }
 
-        public BloodType(string aboType, char rhType )
+        public BloodType(string aboType, string rhType )
         {
             SetAboType(aboType);
             SetRhType(rhType);
+        }
+
+        public BloodType()
+        {
+            
         }
 
         private void SetAboType(string aboType)
@@ -21,9 +27,9 @@ namespace BloodDonors.Core.Domain
             AboType = aboType.ToUpper();
         }
 
-        private void SetRhType(char rhType)
+        private void SetRhType(string rhType)
         {
-            if (rhType != '+' && rhType != '-')
+            if (rhType != "+" && rhType != "-")
                 throw new Exception($"Invalid {nameof(rhType)}.");
             RhType = rhType;
         }
