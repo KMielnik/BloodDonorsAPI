@@ -9,6 +9,7 @@ using BloodDonors.Infrastructure.Services;
 using BloodDonors.Core.Repositories;
 using BloodDonors.Infrastructure.Mappers;
 using BloodDonors.Infrastructure.Repositories;
+using BloodDonors.Infrastructure.EntityFramework;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BloodDonors.API
@@ -43,6 +44,10 @@ namespace BloodDonors.API
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton(AutoMapperConfig.Initialize());
+
+            services.AddEntityFrameworkSqlServer()
+                .AddEntityFrameworkInMemoryDatabase()
+                .AddDbContext<BloodDonorsContext>();
             services.AddMvc();
         }
 
