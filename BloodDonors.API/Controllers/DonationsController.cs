@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BloodDonors.Infrastructure.DTO;
+using BloodDonors.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,36 +14,30 @@ namespace BloodDonors.API.Controllers
     [Route("api/[controller]")]
     public class DonationsController : Controller
     {
-        // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IBloodDonationService bloodDonationService;
+
+        public DonationsController(IBloodDonationService bloodDonationService)
         {
-            return new string[] { "value1", "value2" };
+            this.bloodDonationService = bloodDonationService;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("honorary")]
+        public async Task<IEnumerable<DonorScoreDTO>> GetHonoraryDonors()
         {
-            return "value";
+            return await bloodDonationService.GetHonoraryDonorsAsync();
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpGet("allBloodVolume")]
+        public async Task<int> GetAllBloodVolume()
         {
+            return await bloodDonationService.HowMuchBloodHasBeenDonatedEver();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpGet("allBlood")]
+        [Authorize(Roles = "personnel")]
+        public async Task<IEnumerable<BloodDonationDTO>> GetAllBloodDonations()
         {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return await bloodDonationService.GetAllAsync();
         }
     }
 }
