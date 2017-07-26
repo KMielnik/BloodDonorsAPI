@@ -49,9 +49,9 @@ namespace BloodDonors.Infrastructure.Services
             List<string> donorPesels = (await donorService.GetAllAsync()).Select(x => x.Pesel).ToList();
             List<string> personnelPesels = (await personnelService.GetAllAsync()).Select(x => x.Pesel).ToList();
 
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 200; i++)
             {
-                var volume = random.Next(100, 850);
+                var volume = random.Next(500, 1250);            //VERY generous :P
                 var donorPesel = donorPesels[random.Next(donorPesels.Count)];
                 var personnelPesel = personnelPesels[random.Next(personnelPesels.Count)];
 

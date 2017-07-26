@@ -15,31 +15,32 @@ namespace BloodDonors.API.Controllers
     public class DonorController : Controller
     {
         private readonly IDonorService donorService;
+        private readonly IBloodDonationService bloodDonationService;
         private readonly IJwtService jwtService;
 
-        public DonorController(IDonorService donorService, IJwtService jwtService)
+        public DonorController(IDonorService donorService, IBloodDonationService bloodDonationService,
+            IJwtService jwtService)
         {
             this.donorService = donorService;
+            this.bloodDonationService = bloodDonationService;
             this.jwtService = jwtService;
         }
 
         [HttpGet("name")]
         [Authorize(Roles = "donor")]
-        public async Task<IActionResult> Get()
+        public async Task<string> GetName()
         {
-            var jwt = GetTokenFromRequest(Request);
+            var pesel = GetPeselFromRequest(Request);
 
-            var name = jwt.Id;
-            var donorName = await donorService.GetNameAsync(name);
-            return Json(donorName);
+            var donorName = await donorService.GetNameAsync(pesel);
+            return donorName;
         }
 
-        [Authorize]
+        [Authorize(Roles = "donor")]
         [HttpGet("account")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAccount()
         {
-            var jwt = GetTokenFromRequest(Request);
-            var pesel = jwt.Id;
+            var pesel = GetPeselFromRequest(Request);
 
             var donorDto = await donorService.GetAsync(pesel);
             return Json(donorDto);
@@ -52,10 +53,24 @@ namespace BloodDonors.API.Controllers
             return Json(jwtService.CreateToken(credentials.Pesel, "donor"));
         }
 
-        [HttpPost]
-        public async Task Post()
+        [Authorize(Roles = "donor")]
+        [HttpGet("volume")]
+        public async Task<int> GetOverallBloodVolume()
         {
-            await donorService.RegisterAsync("12345678901", "Elo", new BloodTypeDTO(){AboType = "O",RhType = '-'}, "das@", "31231", "kj57nk");
+            var pesel = GetPeselFromRequest(Request);
+
+            var bloodVolumeDonatedByDonor = (await bloodDonationService.GetAllAsync())
+                .Where(x => x.Donor.Pesel == pesel)
+                .Sum(x => x.Volume);
+            return bloodVolumeDonatedByDonor;
+        }
+
+        [Authorize(Roles = "donor")]
+        [HttpGet("whenabletodonate")]
+        public async Task<DateTime> GetWhenAbleToDonateAgain()
+        {
+            var pesel = GetPeselFromRequest(Request);
+            return await donorService.WhenWillBeAbleToDonateAgainAsync(pesel);
         }
 
         private JwtSecurityToken GetTokenFromRequest(HttpRequest request)
@@ -65,6 +80,12 @@ namespace BloodDonors.API.Controllers
 
             var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
             return jwt;
+        }
+
+        private string GetPeselFromRequest(HttpRequest request)
+        {
+            var jwt = GetTokenFromRequest(Request);
+            return jwt.Id;
         }
     }
 }
