@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BloodDonors.Infrastructure.DTO;
 
-namespace BloodDonors.Infrastructure.DTO
+namespace BloodDonors.Infrastructure.EntryData
 {
     public class RegisterDonor
     {
