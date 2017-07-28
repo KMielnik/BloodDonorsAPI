@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
@@ -18,6 +19,15 @@ namespace BloodDonors.Infrastructure.Repositories
 
         public async Task<IEnumerable<BloodType>> GetAllAsync()
             => await context.BloodTypes.ToListAsync();
+
+        public async Task<BloodType> GetAsync(string aboType, string rhType)
+        {
+            var bloodType = context.BloodTypes
+                .Where(x => x.AboType == aboType)
+                .SingleOrDefault(x => x.RhType == rhType);
+
+            return await Task.FromResult(bloodType);
+        }
 
         public async Task AddAsync(BloodType bloodType)
         {

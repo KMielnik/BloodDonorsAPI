@@ -13,14 +13,16 @@ namespace BloodDonors.Infrastructure.Services
     {
         private readonly IBloodDonationRepository bloodDonationRepository;
         private readonly IDonorRepository donorRepository;
+        private readonly IBloodTypeRepository bloodTypeRepository;
         private readonly IPersonnelRepository personnelRepository;
         private readonly IMapper mapper;
 
         public BloodDonationService(IBloodDonationRepository bloodDonationRepository, IDonorRepository donorRepository,
-            IPersonnelRepository personnelRepository, IMapper mapper)
+            IBloodTypeRepository bloodTypeRepository, IPersonnelRepository personnelRepository, IMapper mapper)
         {
             this.bloodDonationRepository = bloodDonationRepository;
             this.donorRepository = donorRepository;
+            this.bloodTypeRepository = bloodTypeRepository;
             this.personnelRepository = personnelRepository;
             this.mapper = mapper;
         }
@@ -46,7 +48,7 @@ namespace BloodDonors.Infrastructure.Services
             if (personnel == null)
                 throw new Exception($"{nameof(personnel)} not found.");
 
-            var bloodType = new BloodType(donor.BloodType.AboType, donor.BloodType.RhType);
+            var bloodType = donor.BloodType;
             donor.UpdateTimeOfLastDonation(dateOfDonation);
             await donorRepository.UpdateAsync(donor);
 

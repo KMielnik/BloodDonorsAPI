@@ -13,14 +13,16 @@ namespace BloodDonors.Infrastructure.Services
     {
         private readonly IDonorRepository donorRepository;
         private readonly IBloodDonationRepository bloodDonationRepository;
+        private readonly IBloodTypeRepository bloodTypeRepository;
         private readonly IMapper mapper;
         private readonly IEncrypter encrypter;
 
         public DonorService(IDonorRepository donorRepository, IBloodDonationRepository bloodDonationRepository,
-            IMapper mapper, IEncrypter encrypter)
+            IBloodTypeRepository bloodTypeRepository, IMapper mapper, IEncrypter encrypter)
         {
             this.donorRepository = donorRepository;
             this.bloodDonationRepository = bloodDonationRepository;
+            this.bloodTypeRepository = bloodTypeRepository;
             this.mapper = mapper;
             this.encrypter = encrypter;
         }
@@ -84,7 +86,7 @@ namespace BloodDonors.Infrastructure.Services
             var salt = encrypter.GetSalt(passowrd);
             var hash = encrypter.GetHash(passowrd, salt);
 
-            var bloodType = new BloodType(bloodTypeDTO.AboType, bloodTypeDTO.RhType);
+            var bloodType = await bloodTypeRepository.GetAsync(bloodTypeDTO.AboType, bloodTypeDTO.RhType);
             donor = new Donor(pesel, hash, salt, name,
                 bloodType, mail, phone);
             await donorRepository.AddAsync(donor);
