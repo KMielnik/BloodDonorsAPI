@@ -46,7 +46,7 @@ namespace BloodDonors.API.Controllers
             return bloodVolumeTakenByPesel;
         }
 
-        [HttpGet("account")]
+        [HttpGet]
         public async Task<IActionResult> GetAccount()
         {
             var pesel = GetPeselFromRequest(Request);

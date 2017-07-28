@@ -38,7 +38,7 @@ namespace BloodDonors.API.Controllers
         }
 
         [Authorize(Roles = "donor")]
-        [HttpGet("account")]
+        [HttpGet]
         public async Task<IActionResult> GetAccount()
         {
             var pesel = GetPeselFromRequest(Request);
@@ -55,7 +55,7 @@ namespace BloodDonors.API.Controllers
         }
 
         [Authorize(Roles = "donor")]
-        [HttpGet("volume")]
+        [HttpGet("donations/volume")]
         public async Task<int> GetOverallBloodVolume()
         {
             var pesel = GetPeselFromRequest(Request);
@@ -67,7 +67,7 @@ namespace BloodDonors.API.Controllers
         }
 
         [Authorize(Roles = "donor")]
-        [HttpGet("whenabletodonate")]
+        [HttpGet("donations/whenabletodonate")]
         public async Task<DateTime> GetWhenAbleToDonateAgain()
         {
             var pesel = GetPeselFromRequest(Request);
