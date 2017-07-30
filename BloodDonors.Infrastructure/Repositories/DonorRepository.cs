@@ -17,10 +17,14 @@ namespace BloodDonors.Infrastructure.Repositories
         }
 
         public async Task<Donor> GetAsync(string pesel)
-            => await context.Donors.FindAsync(pesel);
+            => await context.Donors
+                .Include(x => x.BloodType)
+                .SingleOrDefaultAsync(x => x.Pesel == pesel);
 
         public async Task<IEnumerable<Donor>> GetAllAsync()
-            => await context.Donors.ToListAsync();
+            => await context.Donors
+                .Include(x => x.BloodType)
+                .ToListAsync();
 
         public async Task AddAsync(Donor donor)
         {

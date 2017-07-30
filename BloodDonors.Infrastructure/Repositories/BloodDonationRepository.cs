@@ -18,10 +18,18 @@ namespace BloodDonors.Infrastructure.Repositories
         }
 
         public async Task<BloodDonation> GetAsync(Guid id)
-            => await context.BloodDonations.FindAsync(id);
+            => await context.BloodDonations
+                .Include(x => x.BloodType)
+                .Include(x => x.BloodTaker)
+                .Include(x => x.Donor)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<IEnumerable<BloodDonation>> GetAllAsync()
-            => await context.BloodDonations.ToListAsync();
+            => await context.BloodDonations
+            .Include(x=>x.BloodType)
+            .Include(x=>x.BloodTaker)
+            .Include(x=>x.Donor)
+            .ToListAsync();
 
         public async Task AddAsync(BloodDonation bloodDonation)
         {
