@@ -37,8 +37,6 @@ namespace BloodDonors.Infrastructure.EntityFramework
                 entity =>
                 {
                     entity.HasKey(x => x.Pesel);
-                    entity.Property(x => x.Pesel)
-                        .HasColumnType("nchar(20)");
                 });
 
             modelBuilder.Entity<Personnel>()
