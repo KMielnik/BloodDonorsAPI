@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonors.API.Controllers
 {
+    [Authorize(Roles = "donor")]
     [Route("api/[controller]")]
     public class DonorController : Controller
     {
@@ -28,7 +29,6 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpGet("name")]
-        [Authorize(Roles = "donor")]
         public async Task<string> GetName()
         {
             var pesel = GetPeselFromRequest(Request);
@@ -37,7 +37,6 @@ namespace BloodDonors.API.Controllers
             return donorName;
         }
 
-        [Authorize(Roles = "donor")]
         [HttpGet]
         public async Task<IActionResult> GetAccount()
         {
@@ -47,6 +46,7 @@ namespace BloodDonors.API.Controllers
             return Json(donorDto);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials)
         {
@@ -54,7 +54,6 @@ namespace BloodDonors.API.Controllers
             return Json(jwtService.CreateToken(loginCredentials.Pesel, "donor"));
         }
 
-        [Authorize(Roles = "donor")]
         [HttpGet("donations/volume")]
         public async Task<int> GetOverallBloodVolume()
         {
@@ -66,7 +65,6 @@ namespace BloodDonors.API.Controllers
             return bloodVolumeDonatedByDonor;
         }
 
-        [Authorize(Roles = "donor")]
         [HttpGet("donations/whenabletodonate")]
         public async Task<DateTime> GetWhenAbleToDonateAgain()
         {
