@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Infrastructure.EntryData;
+using BloodDonors.Infrastructure.Exceptions;
 using BloodDonors.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,36 +32,59 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpGet("name")]
-        public async Task<string> GetName()
+        public async Task<IActionResult> GetName()
         {
             var pesel = GetPeselFromRequest(Request);
             var personnelName = await personnelService.GetNameAsync(pesel);
-            return personnelName;
+
+            if (personnelName == null)
+                return StatusCode(410);
+
+            return Ok(personnelName);
         }
 
         [HttpGet("allTakenBlood")]
-        public async Task<int> AllTakenBloodByPersonnel()
+        public async Task<IActionResult> AllTakenBloodByPersonnel()
         {
             var pesel = GetPeselFromRequest(Request);
             var bloodVolumeTakenByPesel = await bloodDonationService.HowMuchBloodTakenByPersonnel(pesel);
-            return bloodVolumeTakenByPesel;
+            return Ok(bloodVolumeTakenByPesel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAccount()
         {
             var pesel = GetPeselFromRequest(Request);
-            var personnel = await personnelService.GetAsync(pesel);
+            var personnelDto = await personnelService.GetAsync(pesel);
 
-            return Json(personnel);
+            if (personnelDto == null)
+                return StatusCode(410);
+
+            return Ok(personnelDto);
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials)
         {
-            await personnelService.LoginAsync(loginCredentials.Pesel,loginCredentials.Password);
-            return Json(jwtService.CreateToken(loginCredentials.Pesel, "personnel"));
+            try
+            {
+                await personnelService.LoginAsync(loginCredentials.Pesel, loginCredentials.Password);
+            }
+            catch (UserNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+            return Ok(jwtService.CreateToken(loginCredentials.Pesel, "personnel"));
+        }
+
+        [HttpGet("donor/{pesel}")]
+        public async Task<IActionResult> GetDonorByPesel(string pesel)
+        {
+            var donorDto = await donorService.GetAsync(pesel);
+            if (donorDto == null)
+                return NotFound("Donor with that pesel has not been found");
+            return Ok(donorDto);
         }
 
         [HttpGet("lastDonationBy/{donorPesel}")]
@@ -69,22 +93,53 @@ namespace BloodDonors.API.Controllers
             var donor = await donorService.GetAsync(donorPesel);
             if (donor == null)
                 return NotFound();
-            return Json(donor.LastDonated);
+            return Ok(donor.LastDonated);
         }
 
         [HttpPost("newDonor")]
-        public async Task NewDonor([FromBody] RegisterDonor registerDonor)
+        public async Task<IActionResult> NewDonor([FromBody] RegisterDonor registerDonor)
         {
+            if (registerDonor == null)
+                return BadRequest("New donor can't be null");
+
             var password = registerDonor.Pesel;
-            await donorService.RegisterAsync(registerDonor.Pesel, registerDonor.Name, registerDonor.BloodType, registerDonor.Mail,
-                registerDonor.Phone, password);
+
+            try
+            {
+                await donorService.RegisterAsync(registerDonor.Pesel, registerDonor.Name, registerDonor.BloodType,
+                    registerDonor.Mail, registerDonor.Phone, password);
+            }
+            catch (UserAlreadyExistsException e)
+            {
+                return StatusCode(409, e.Message);
+            }
+            return Created($"personnel/donor/{registerDonor.Pesel}", Json(registerDonor));
         }
 
         [HttpPost("newDonation")]
-        public async Task NewDonation([FromBody] AddDonation donation )
+        public async Task<IActionResult> NewDonation([FromBody] AddDonation donation )
         {
-            await bloodDonationService.AddBloodDonationAsync(donation.DateOfDonation, donation.Volume,
-                donation.DonorPesel, donation.BloodTakerPesel);
+            if (donation == null)
+                return BadRequest("New donation can't be null.");
+
+            try
+            {
+                await bloodDonationService.AddBloodDonationAsync(donation.DateOfDonation, donation.Volume,
+                    donation.DonorPesel, donation.BloodTakerPesel);
+            }
+            catch (UserNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Created("personnel/allBlood", Json(donation));
+        }
+
+        [HttpGet("allBlood")]
+        public async Task<IActionResult> GetAllBloodDonations()
+        {
+            IEnumerable<BloodDonationDTO> allBloodDonations = await bloodDonationService.GetAllAsync();
+            return Ok(allBloodDonations);
         }
 
         private JwtSecurityToken GetTokenFromRequest(HttpRequest request)

@@ -19,9 +19,10 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<BloodTypeDTO>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await bloodTypeService.GetAllAsync();
+            IEnumerable<BloodTypeDTO> bloodTypes = await bloodTypeService.GetAllAsync();
+            return Ok(bloodTypes);
         }
     }
 }

@@ -69,12 +69,12 @@ namespace BloodDonors.Infrastructure.Services
         {
             var donor = await donorRepository.GetAsync(pesel);
             if (donor == null)
-                throw new UserNotFoundException("User not found");
+                throw new UserNotFoundException("Incorrect pesel/password");
 
             var hash = encrypter.GetHash(password, donor.Salt);
             if(donor.Password == hash)
                 return;
-            throw new UserNotFoundException("Incorrect password");
+            throw new UserNotFoundException("Incorrect pesel/password");
         }
 
         public async Task RegisterAsync(string pesel, string name, BloodTypeDTO bloodTypeDTO, 

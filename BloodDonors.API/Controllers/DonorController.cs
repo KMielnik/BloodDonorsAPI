@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Infrastructure.EntryData;
+using BloodDonors.Infrastructure.Exceptions;
 using BloodDonors.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,47 +30,62 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpGet("name")]
-        public async Task<string> GetName()
+        public async Task<IActionResult> GetName()
         {
             var pesel = GetPeselFromRequest(Request);
-
             var donorName = await donorService.GetNameAsync(pesel);
-            return donorName;
+
+            if (donorName == null)
+                return StatusCode(410);
+
+            return Ok(donorName);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAccount()
         {
             var pesel = GetPeselFromRequest(Request);
-
             var donorDto = await donorService.GetAsync(pesel);
-            return Json(donorDto);
+
+            if (donorDto == null)
+                return StatusCode(410);
+
+            return Ok(donorDto);
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials)
         {
-            await donorService.LoginAsync(loginCredentials.Pesel, loginCredentials.Password);
-            return Json(jwtService.CreateToken(loginCredentials.Pesel, "donor"));
+            try
+            {
+                await donorService.LoginAsync(loginCredentials.Pesel, loginCredentials.Password);
+            }
+            catch (UserNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+            var token = jwtService.CreateToken(loginCredentials.Pesel, "donor");
+            return Ok(token);
         }
 
         [HttpGet("donations/volume")]
-        public async Task<int> GetOverallBloodVolume()
+        public async Task<IActionResult> GetOverallBloodVolume()
         {
             var pesel = GetPeselFromRequest(Request);
 
             var bloodVolumeDonatedByDonor = (await bloodDonationService.GetAllAsync())
                 .Where(x => x.Donor.Pesel == pesel)
                 .Sum(x => x.Volume);
-            return bloodVolumeDonatedByDonor;
+            return Ok(bloodVolumeDonatedByDonor);
         }
 
         [HttpGet("donations/whenabletodonate")]
-        public async Task<DateTime> GetWhenAbleToDonateAgain()
+        public async Task<IActionResult> GetWhenAbleToDonateAgain()
         {
             var pesel = GetPeselFromRequest(Request);
-            return await donorService.WhenWillBeAbleToDonateAgainAsync(pesel);
+            var date = await donorService.WhenWillBeAbleToDonateAgainAsync(pesel);
+            return Ok(date);
         }
 
         private JwtSecurityToken GetTokenFromRequest(HttpRequest request)

@@ -6,6 +6,7 @@ using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BloodDonors.API.Controllers
 {
@@ -20,22 +21,17 @@ namespace BloodDonors.API.Controllers
         }
 
         [HttpGet("honorary")]
-        public async Task<IEnumerable<DonorScoreDTO>> GetHonoraryDonors()
+        public async Task<IActionResult> GetHonoraryDonors()
         {
-            return await bloodDonationService.GetHonoraryDonorsAsync();
+            IEnumerable<DonorScoreDTO> honoraryDonors = await bloodDonationService.GetHonoraryDonorsAsync();
+            return Ok(honoraryDonors);
         }
 
         [HttpGet("allBloodVolume")]
-        public async Task<int> GetAllBloodVolume()
+        public async Task<IActionResult> GetAllBloodVolume()
         {
-            return await bloodDonationService.HowMuchBloodHasBeenDonatedEver();
-        }
-
-        [HttpGet("allBlood")]
-        [Authorize(Roles = "personnel")]
-        public async Task<IEnumerable<BloodDonationDTO>> GetAllBloodDonations()
-        {
-            return await bloodDonationService.GetAllAsync();
+            var allBloodVolume = await bloodDonationService.HowMuchBloodHasBeenDonatedEver();
+            return Ok(allBloodVolume);
         }
     }
 }

@@ -48,12 +48,12 @@ namespace BloodDonors.Infrastructure.Services
         {
             var personnel = await personnelRepository.GetAsync(pesel);
             if (personnel == null)
-                throw new UserNotFoundException("Personnel not found");
+                throw new UserNotFoundException("Incorrect pesel/password");
 
             var hash = encrypter.GetHash(password, personnel.Salt);
             if(personnel.Password == hash)
                 return;
-            throw new UserNotFoundException("Incorrect password");
+            throw new UserNotFoundException("Incorrect pesel/password");
         }
 
         /// <summary>
