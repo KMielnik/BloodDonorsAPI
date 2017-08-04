@@ -6,6 +6,7 @@ using AutoMapper;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
 using BloodDonors.Infrastructure.DTO;
+using BloodDonors.Infrastructure.Exceptions;
 
 namespace BloodDonors.Infrastructure.Services
 {
@@ -42,11 +43,11 @@ namespace BloodDonors.Infrastructure.Services
             var guid = Guid.NewGuid();
             var donor = await donorRepository.GetAsync(donorPesel);
             if (donor == null)
-                throw new Exception($"{nameof(donor)} not found.");
+                throw new UserNotFoundException($"{nameof(donor)} not found.");
 
             var personnel = await personnelRepository.GetAsync(personnelPesel);
             if (personnel == null)
-                throw new Exception($"{nameof(personnel)} not found.");
+                throw new UserNotFoundException($"{nameof(personnel)} not found.");
 
             var bloodType = donor.BloodType;
             donor.UpdateTimeOfLastDonation(dateOfDonation);

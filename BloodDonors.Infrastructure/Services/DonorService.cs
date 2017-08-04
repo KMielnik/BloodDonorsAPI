@@ -6,6 +6,7 @@ using AutoMapper;
 using BloodDonors.Core.Domain;
 using BloodDonors.Infrastructure.DTO;
 using BloodDonors.Core.Repositories;
+using BloodDonors.Infrastructure.Exceptions;
 
 namespace BloodDonors.Infrastructure.Services
 {
@@ -68,12 +69,12 @@ namespace BloodDonors.Infrastructure.Services
         {
             var donor = await donorRepository.GetAsync(pesel);
             if (donor == null)
-                throw new Exception("User not found");
+                throw new UserNotFoundException("User not found");
 
             var hash = encrypter.GetHash(password, donor.Salt);
             if(donor.Password == hash)
                 return;
-            throw new Exception("Incorrect password");
+            throw new UserNotFoundException("Incorrect password");
         }
 
         public async Task RegisterAsync(string pesel, string name, BloodTypeDTO bloodTypeDTO, 
@@ -81,7 +82,7 @@ namespace BloodDonors.Infrastructure.Services
         {
             var donor = await donorRepository.GetAsync(pesel);
             if(donor != null)
-                throw new Exception("User with that PESEL already exists");
+                throw new UserAlreadyExistsException("User with that PESEL already exists");
 
             var salt = encrypter.GetSalt(passowrd);
             var hash = encrypter.GetHash(passowrd, salt);

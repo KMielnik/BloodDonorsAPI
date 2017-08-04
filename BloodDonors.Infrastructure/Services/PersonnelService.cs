@@ -6,6 +6,7 @@ using AutoMapper;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
 using BloodDonors.Infrastructure.DTO;
+using BloodDonors.Infrastructure.Exceptions;
 
 namespace BloodDonors.Infrastructure.Services
 {
@@ -47,12 +48,12 @@ namespace BloodDonors.Infrastructure.Services
         {
             var personnel = await personnelRepository.GetAsync(pesel);
             if (personnel == null)
-                throw new Exception("Personnel not found");
+                throw new UserNotFoundException("Personnel not found");
 
             var hash = encrypter.GetHash(password, personnel.Salt);
             if(personnel.Password == hash)
                 return;
-            throw new Exception("Incorrect password");
+            throw new UserNotFoundException("Incorrect password");
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace BloodDonors.Infrastructure.Services
         {
             var personnel = await personnelRepository.GetAsync(pesel);
             if (personnel != null)
-                throw new Exception("User with that pesel already exists");
+                throw new UserAlreadyExistsException("User with that pesel already exists");
 
             var salt = encrypter.GetSalt(password);
             var hash = encrypter.GetHash(password, salt);

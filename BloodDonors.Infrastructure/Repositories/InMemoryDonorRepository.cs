@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BloodDonors.Core.Domain;
 using BloodDonors.Core.Repositories;
 using System.Linq;
+using BloodDonors.Infrastructure.Exceptions;
 
 namespace BloodDonors.Infrastructure.Repositories
 {
@@ -31,7 +32,7 @@ namespace BloodDonors.Infrastructure.Repositories
         {
             var oldDonor = donors.SingleOrDefault(x => x.Pesel == donor.Pesel);
             if (oldDonor == null)
-                throw new Exception("Tried to update non existing donor");
+                throw new UserNotFoundException("Tried to update non existing donor");
             donors.Remove(oldDonor);
             donors.Add(donor);
             await Task.CompletedTask;
