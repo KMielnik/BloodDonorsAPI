@@ -51,23 +51,25 @@ namespace BloodDonors.Infrastructure.Services
             for (var i = 0; i < 10; i++)
             {
                 var pesel = $"{i}1234567890";
+                var password = pesel;
                 var name = $"{i} donor";
-                var bloodTypeDTO = bloodTypes[random.Next(bloodTypes.Count)];
+                var bloodTypeDto = bloodTypes[random.Next(bloodTypes.Count)];
                 var mail = $"donor{i}@wp.pl";
 
-                await donorService.RegisterAsync(pesel, name, bloodTypeDTO, mail, pesel, "password");
+                await donorService.RegisterAsync(pesel, name, bloodTypeDto, mail, pesel, password);
 
 
                 pesel = $"{i}0987654321";
+                password = pesel;
                 name = $"{i} personnel";
 
-                await personnelService.RegisterAsync(pesel, "password", name);
+                await personnelService.RegisterAsync(pesel, password, name);
             }
 
             List<string> donorPesels = (await donorService.GetAllAsync()).Select(x => x.Pesel).ToList();
             List<string> personnelPesels = (await personnelService.GetAllAsync()).Select(x => x.Pesel).ToList();
 
-            for (var i = 0; i < 200; i++)
+            for (var i = 0; i < 250; i++)
             {
                 var volume = random.Next(500, 1250);            //VERY generous :P
                 var donorPesel = donorPesels[random.Next(donorPesels.Count)];
