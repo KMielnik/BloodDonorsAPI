@@ -23,13 +23,13 @@ namespace BloodDonors.Core.Domain
         private void SetPesel(string pesel)
         {
             if (pesel.Empty())
-                throw new Exception($"{nameof(pesel)} can't be empty.");
+                throw new ArgumentNullException($"{nameof(pesel)} can't be empty.");
             if (pesel.Length != 11)
-                throw new Exception($"Invalid {nameof(pesel)}");
+                throw new ArgumentException($"Invalid {nameof(pesel)}");
 
             var regexOnlyDigits = new Regex("^[0-9]+$");
             if (regexOnlyDigits.IsMatch(pesel) == false)
-                throw new Exception($"Invalid {nameof(pesel)}");
+                throw new ArgumentException($"Invalid {nameof(pesel)}");
 
             Pesel = pesel;
         }
@@ -37,11 +37,11 @@ namespace BloodDonors.Core.Domain
         private void SetPassword(string password, string salt)
         {
             if (password.Empty())
-                throw new Exception($"{nameof(password)} can't be empty.");
+                throw new ArgumentNullException($"{nameof(password)} can't be empty.");
             if (salt.Empty())
-                throw new Exception($"{nameof(salt)} can't be empty.");
+                throw new ArgumentNullException($"{nameof(salt)} can't be empty.");
             if (password.Length < 5)
-                throw new Exception($"{nameof(password)} must be at least 5 characters long.");
+                throw new ArgumentNullException($"{nameof(password)} must be at least 5 characters long.");
             Password = password;
             Salt = salt;
         }
@@ -49,7 +49,7 @@ namespace BloodDonors.Core.Domain
         private void SetName(string name)
         {
             if (name.Empty())
-                throw new Exception($"{nameof(name)} can't be empty.");
+                throw new ArgumentNullException($"{nameof(name)} can't be empty.");
             Name = name;
         }
 

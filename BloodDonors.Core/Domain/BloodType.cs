@@ -22,14 +22,14 @@ namespace BloodDonors.Core.Domain
         private void SetAboType(string aboType)
         {
             if (aboType.Empty())
-                throw new Exception($"{nameof(aboType)} can't be empty.");
+                throw new ArgumentNullException($"{nameof(aboType)} can't be empty.");
             AboType = aboType.ToUpper();
         }
 
         private void SetRhType(string rhType)
         {
             if (rhType != "+" && rhType != "-")
-                throw new Exception($"Invalid {nameof(rhType)}.");
+                throw new ArgumentException($"Invalid {nameof(rhType)}.");
             RhType = rhType;
         }
     }

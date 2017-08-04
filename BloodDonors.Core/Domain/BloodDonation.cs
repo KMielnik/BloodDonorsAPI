@@ -17,9 +17,9 @@ namespace BloodDonors.Core.Domain
             Id = id;
             DateOfDonation = dateOfDonation;
             Volume = volume;
-            BloodType = bloodType ?? throw new Exception($"{nameof(bloodType)} can't be null'");
-            Donor = donor ?? throw new Exception($"{nameof(donor)} can't be null'");
-            BloodTaker = bloodTaker ?? throw new Exception($"{nameof(bloodTaker)} can't be null'");
+            BloodType = bloodType ?? throw new ArgumentNullException($"{nameof(bloodType)} can't be null'");
+            Donor = donor ?? throw new ArgumentNullException($"{nameof(donor)} can't be null'");
+            BloodTaker = bloodTaker ?? throw new ArgumentNullException($"{nameof(bloodTaker)} can't be null'");
         }
 
         public BloodDonation()
